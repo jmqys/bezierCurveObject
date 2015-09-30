@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<script src="bezierCurveObject.js"></script>
+	</head>
+	<body>
+		<canvas id="canvas" width="640" height="480" style="border:solid 1px #000;"></canvas>
+		<script>
+			var myCanvas = document.getElementById('canvas');
+			var context = myCanvas.getContext('2d');
+			
+			// BezierCurveObjectオブジェクトを作成
+			var bezier = new BezierCurveObject(40, 20, 150, 600, 300, 0, 600, 460);
+			
+			// ベジェ曲線を100分割して、それぞれの座標を作成する
+			bezier.createPointData(100);
+			
+			// 矩形が終点に来た時の動きを決める
+			bezier.repeatType = 0;
+			
+			// 50ms毎に描画を行う
+			var timer = setInterval(draw, 50);
+			
+			function draw(){
+				// 画面をクリア
+				context.clearRect(0, 0, 640, 480);
+
+				// 次の座標を取得
+				var point = bezier.getNextPoint()
+				
+				// 曲線を描画
+				bezier.stroke(context);
+				
+				// 矩形を描画
+				// context.fillRect(point.x, point.y, 10, 10);
+				
+				// 進行方向の角度を取得
+				var rad = bezier.getDirectionRadian();
+				
+				// 角度を変えて矩形を描画
+				context.save();
+				context.setTransform(1, 0, 0, 1, 0, 0);
+				context.translate(point.x, point.y);
+				context.rotate(rad);
+				context.fillRect(0, 0, 10, 10);
+				context.restore();
+				
+				// 終点まで移動したときに処理を中止する
+				// repeatTypeが0のときのみ使用
+				if(bezier.atEndInOnewey){
+					console.log('stop');
+					clearInterval(timer);
+				}
+			}
+		</script>
+	</body>
+</html>
