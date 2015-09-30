@@ -1,0 +1,10 @@
+# bezierCurveObject
+Canvasのオブジェクトを3次ベジェ曲線にそって動かすためのbezierCurveObjectオブジェクトを作成します。
+
+インスタンスは内部に3次ベジェ曲線のデータを保持し、stroke(context)で描画することができます。
+
+createPointData(length)を呼び出すと、内部に保持するベジェ曲線をlengthで指定した数で分割し、
+各ポイントの座標データを配列で保持します。
+
+getNextPoint()を呼び出す毎に、座標データを順番に返します。
+getDirectionRadian()で角度を取得することもできます。
